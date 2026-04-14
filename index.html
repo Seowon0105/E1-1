@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seowon's Custom Nginx</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .subtitle {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 10px;
+            font-size: 0.9em;
+        }
+        
+        .info {
+            margin-top: 30px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Made by Seowon</h1>
+        <p class="subtitle">Custom Nginx Docker Image</p>
+        
+        <div>
+            <span class="badge">Docker</span>
+            <span class="badge">Nginx</span>
+            <span class="badge">Custom</span>
+        </div>
+        
+        <div class="info">
+            <p>✨ 이 페이지는 커스텀 Dockerfile로 만들어진 Nginx 이미지입니다.</p>
+            <p>🎨 정적 콘텐츠를 직접 구성했습니다.</p>
+            <p>💪 Docker를 활용한 웹 서버 배포 예제입니다.</p>
+        </div>
+    </div>
+</body>
+</html>

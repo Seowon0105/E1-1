@@ -436,3 +436,73 @@ docker run - 컨테이너 실행
 
 ### 기존 Dockerfile 기반 커스텀 이미지 제작
 
+웹서버 베이스의 이미지인 nginx사용.
+
+***프로젝트 구조***
+  
+    E1-1/
+    ├── Dockerfile
+    └── index.html
+
+***Dockerfile의 정의***
+
+Dockerfile은 Docker 이미지를 생성하기 위한 스크립트 파일.
+
+이미지 빌드 과정에서 실행할 명령어와 설명을 순서대로 기술
+
+***Dockefile이 필요한 이유***
+
+재사용성 : 동일한 이미지를 언제든지 동일한 환경에서 생성가능.
+
+자동화 : 명령어를 수동으로 입력하지 않아도 자동으로 이미지를 생성.
+
+버전관리 : Dockerfile을 git에 저장하여 빌드 프로세스를 추적 가능.
+
+***Dockerfile 명령어***
+
+RUN :
+
+
+*** 실행 과정 ***
+
+```bash
+# 1. 이미지 빌드
+docker build -t my-nginx:1.0 .
+
+# 2. 컨테이너 실행
+docker run -d -p 8080:80 --name seowon-nginx my-nginx:1.0 # -d : 백그라운드에서 실행 -p : 포트 매핑 --name : 컨테이너 이름 지정
+
+# 3. 브라우저에서 확인
+# http://localhost:8080 접속
+
+컨테이너를 종료하려면?
+# 1. 실행 중인 컨테이너 확인
+docker ps
+
+# 2. 컨테이너 중지
+docker stop seowon-nginx
+
+# 3. 중지된 컨테이너 확인
+docker ps -a
+
+# 4. 컨테이너 삭제 (선택사항)
+docker rm seowon-nginx
+```
+
+### 포트매핑 접속 증거 ###
+
+
+### Docker 볼륨 영속성 
+
+*** 볼륨 생성 ***
+
+    % docker volume create test-v
+    test-v
+
+*** 볼륨 생성 확인 ***
+
+    % docker volume ls
+    DRIVER    VOLUME NAME
+    local     test-v
+
+
