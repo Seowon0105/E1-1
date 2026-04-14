@@ -147,6 +147,29 @@ $ ls
 project
 ```
 
+### 상대경로와 절대경로 차이
+
+  **절대 경로 (Absolute Path)**
+
+    루트(/)부터 시작하는 완전한 경로
+
+    /usr/share/nginx/html/index.html
+    /home/seowon/project/Dockerfile
+    /var/log/nginx/access.log
+    
+    ✅ 어디서든 같은 위치를 가리킴
+    ✅ 명확하고 헷갈리지 않음
+
+  **상대 경로 (Relative Path)**
+  
+    현재 위치부터 시작하는 경로
+    ./index.html          # 현재 폴더의 index.html
+    ../Dockerfile         # 상위 폴더의 Dockerfile
+    ./html/test.txt       # 현재 폴더 > html 폴더 > test.txt
+
+    ✅ 짧고 간편함
+    ❌ 현재 위치에 따라 다른 파일을 가리킬 수 있음
+
 ### 1-2. 파일 권한 확인 및 변경
 
     # 권한 확인
@@ -490,7 +513,7 @@ docker rm seowon-nginx
 ```
 
 ### 포트매핑 접속 증거 ###
-
+![portmapping](./Screenshot/custom%20image-prac.pngimage.png)
 
 ### Docker 볼륨 영속성 
 
@@ -560,6 +583,8 @@ Made by Seowon #컨테이너 삭제 후에도 볼륨 유지!
     새로운 컨테이너에 동일 볼륨을 연결하면 데이터를 그대로 사용할 수 있다.
 
 ### Git 설정 및 GitHub 연동
+
+![Connecting VS Code to GitHub](./Screenshot/vscode-git.png)
 
 *** 사용자 정보 설정 ***
 
