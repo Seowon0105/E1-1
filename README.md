@@ -203,7 +203,7 @@ r(read) : 4 w(write) : 2 x(execute) : 1
   ### Docker 설치 및 기본 점검
   ***Docker 버전 확인***
 
-    % Docker --version
+    $ Docker --version
     Docker version 28.5.2, build ecc6942
   ***Docker 데몬 동작 확인***
 
@@ -213,7 +213,7 @@ r(read) : 4 w(write) : 2 x(execute) : 1
     docker info : Docker 데몬의 상세 정보를 표시합니다.
     버전, 스토리지 드라이버, 컨테이너 수 등을 확인할 수 있습니다.
 
-    % docker info
+    $ docker info
 
     Client:
     Version:    28.5.2
@@ -360,7 +360,7 @@ docker run - 컨테이너 실행
 
 
 ```bash
-  % docker run hello-world
+  $ docker run hello-world
   Unable to find image 'hello-world:latest' locally #hello-world 이미지가 없어서 이미지를 받아옴
   latest: Pulling from library/hello-world
   4f55086f7dd0: Pull complete 
@@ -388,7 +388,7 @@ docker run - 컨테이너 실행
   For more examples and ideas, visit:
   https://docs.docker.com/get-started/
 
-  % docker run -it ubuntu bash
+  $ docker run -it ubuntu bash
   Unable to find image 'ubuntu:latest' locally
   latest: Pulling from library/ubuntu
   689b91d88a0f: Pull complete 
@@ -404,7 +404,7 @@ docker run - 컨테이너 실행
 
   ### attach vs exec 차이점
 
-  ***attach***
+  **attach**
 
   컨테이너의 표준 입출력(stdin, stdout, stderr)에 연결
 
@@ -418,7 +418,7 @@ docker run - 컨테이너 실행
   ```bash
   docker attach <container>
   ```
-  ***exec***
+  **exec**
 
   새로운 프로세스를 컨테이너 내에서 실행
 
@@ -438,19 +438,19 @@ docker run - 컨테이너 실행
 
 웹서버 베이스의 이미지인 nginx사용.
 
-***프로젝트 구조***
-  
+**프로젝트 구조**
+
     E1-1/
     ├── Dockerfile
     └── index.html
 
-***Dockerfile의 정의***
+**Dockerfile의 정의**
 
 Dockerfile은 Docker 이미지를 생성하기 위한 스크립트 파일.
 
 이미지 빌드 과정에서 실행할 명령어와 설명을 순서대로 기술
 
-***Dockefile이 필요한 이유***
+**Dockefile이 필요한 이유**
 
 재사용성 : 동일한 이미지를 언제든지 동일한 환경에서 생성가능.
 
@@ -458,7 +458,7 @@ Dockerfile은 Docker 이미지를 생성하기 위한 스크립트 파일.
 
 버전관리 : Dockerfile을 git에 저장하여 빌드 프로세스를 추적 가능.
 
-***Dockerfile 명령어***
+**Dockerfile 명령어**
 
 RUN :
 
@@ -494,15 +494,114 @@ docker rm seowon-nginx
 
 ### Docker 볼륨 영속성 
 
-*** 볼륨 생성 ***
+**볼륨 생성**
 
-    % docker volume create test-v
-    test-v
+    $ docker volume create test
+    test
 
-*** 볼륨 생성 확인 ***
+**볼륨 생성 확인**
 
-    % docker volume ls
+    $ docker volume ls
     DRIVER    VOLUME NAME
     local     test-v
 
+**볼륨 연결 후 컨테이너 실행**
+```bash
+docker run -d -p 8080:80 --name seowon-nginx -v test:/usr/share/nginx/html my-nginx:1.0
+docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                     NAMES
+1c9f426eb9da   my-nginx:1.0   "/docker-entrypoint.…"   22 seconds ago   Up 21 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   seowon-nginx
+```
 
+**데이터 작성 및 확인**
+```bash
+$ docker exec seowon-nginx sh -c 'echo "Made by Seowon" > /usr/share/nginx/html/test.txt'
+$ docker exec seowon-nginx cat /usr/share/nginx/html/test.txt
+Made by Seowon
+```
+
+**컨테이너 삭제**
+```bash
+$ docker stop seowon-nginx && docker rm seowon-nginx
+seowon-nginx
+seowon-nginx
+$ docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED       STATUS                     PORTS     NAMES
+3e3a7c77b2b0   my-nginx:1.0   "/docker-entrypoint.…"   2 hours ago   Created                              test-v
+1ac1cef58b4d   ubuntu         "bash"                   5 hours ago   Exited (130) 5 hours ago             wizardly_tharp
+b45b92bdc26a   hello-world    "/hello"
+```
+**데이터 삭제 후 확인**
+```bash
+$ docker run --rm -v test:/data alpine cat /data/test.txt
+Made by Seowon #컨테이너 삭제 후에도 볼륨 유지!
+```
+
+**볼륨 핵심 명령어**
+
+    docker volume create <name>	/ 볼륨 생성
+
+    docker volume ls	/ 볼륨 목록 확인
+
+    docker volume inspect <name>	/ 볼륨 상세 정보
+
+    docker run -v <볼륨>:<경로>	/ 볼륨 연결하여 컨테이너 실행
+
+    docker exec <컨테이너> <명령>	/ 실행 중인 컨테이너에 명령 실행
+
+    docker volume rm <name>	/ 볼륨 삭제
+
+**결론**
+
+    Docker 볼륨은 컨테이너의 생명주기와 독립적으로 존재한다.
+
+    컨테이너를 삭제해도 볼륨의 데이터는 호스트에 영구 보존되며,
+
+    새로운 컨테이너에 동일 볼륨을 연결하면 데이터를 그대로 사용할 수 있다.
+
+### Git 설정 및 GitHub 연동
+
+*** 사용자 정보 설정 ***
+
+```bash
+# 사용자 이름 설정
+git config --global user.name "seowonKim"
+
+# 이메일 설정 
+git config --global user.email "yelp8989@gmail.com"
+
+# 기본 브랜치 이름을 'main'으로 설정
+git config --global init.defaultBranch main
+#global 옵션은 모든 프로젝트에 적용
+
+#git config --list 확인 및 기록
+git config --list
+
+credential.helper=osxkeychain
+user.name=seowonKim
+user.email=yelp8989@gmail.com
+init.defaultbranch=main
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+core.ignorecase=true
+core.precomposeunicode=true
+remote.origin.url=https://github.com/Seowon0105/E1-1.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+branch.main.vscode-merge-base=origin/main
+```
+
+*** GitHub 저장소 연동 ***
+
+```bash
+# GitHub에서 만든 원격 저장소 연결
+git remote add origin https://github.com/Seowon0105/E1-1.git
+
+# 연결 확인
+$ git remote -v
+origin  https://github.com/Seowon0105/E1-1.git (fetch)
+origin  https://github.com/Seowon0105/E1-1.git (push)
+```
