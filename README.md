@@ -48,12 +48,29 @@
 
 | 항목 | 내용 |
 | :--- | :--- |
-| **OS** | |
-| **Shell / Terminal** | |
-| **Docker 버전** | |
-| **Git 버전** | |
+| **OS** | macOS 15.7.4 |
+| **Shell** | zsh 5.9 (x86_64-apple-darwin24.0) |
+| **Docker 버전** | Docker version 28.5.2, build ecc6942 |
+| **Git 버전** | git version 2.53.0 |
 | **비고** | OrbStack 사용 (sudo 권한 제한 환경) |
 
+## 실행환경 확인 명령어
+  $ sw_vers
+  ProductName:            macOS
+  ProductVersion:         15.7.4
+  BuildVersion:           24G517
+
+  $ echo $SHELL
+  /bin/zsh
+
+  $ zsh --version
+  zsh 5.9 (x86_64-apple-darwin24.0)
+
+  $ docker --version
+  Docker version 28.5.2, build ecc6942
+
+  $ git --version
+  git version 2.53.0
 > **OrbStack 사용 이유**
 > 서울캠퍼스 환경은 보안 정책상 `sudo` 권한이 제한되어 Docker 데몬을 직접 제어하기 어렵습니다.
 > OrbStack은 별도의 `sudo` 없이도 Docker 엔진을 구동하고 `docker` 명령어를 그대로 사용할 수 있습니다.
@@ -64,15 +81,15 @@
 
 | 항목 | 완료 여부 |
 | :--- | :---: |
-| 터미널 기본 조작 (이동/생성/복사/삭제 등) | ☐ |
-| 파일 권한 확인 및 변경 | ☐ |
-| Docker 설치 및 기본 점검 | ☐ |
-| Docker 기본 운영 명령 수행 | ☐ |
-| 컨테이너 실행 실습 (hello-world / ubuntu) | ☐ |
-| Dockerfile 기반 커스텀 이미지 제작 | ☐ |
-| 포트 매핑 및 브라우저 접속 확인 | ☐ |
-| Docker 볼륨 영속성 검증 | ☐ |
-| Git 설정 및 GitHub 연동 | ☐ |
+| 터미널 기본 조작 (이동/생성/복사/삭제 등) | ✅ |
+| 파일 권한 확인 및 변경 | ✅ |
+| Docker 설치 및 기본 점검 | ✅ |
+| Docker 기본 운영 명령 수행 | ✅ |
+| 컨테이너 실행 실습 (hello-world / ubuntu) | ✅ |
+| Dockerfile 기반 커스텀 이미지 제작 | ✅ |
+| 포트 매핑 및 브라우저 접속 확인 | ✅ |
+| Docker 볼륨 영속성 검증 | ✅ |
+| Git 설정 및 GitHub 연동 | ✅ |
 
 ---
 ## 1. 터미널 조작 로그
@@ -141,15 +158,15 @@ project
 
 r(read) : 4 w(write) : 2 x(execute) : 1
 
-| 숫자 |	    권한	   | 주요 사용처|
+숫자 / 권한  /주요 수행 역할 
 
 ---
 
-755     rwxr-xr-x	실행 파일 / 디렉토리
+755/     rwxr-xr-x/	실행 파일 , 디렉토리
 
-644     rw-r--r--	일반 텍스트 / 데이터 파일
+644/     rw-r--r--/	일반 텍스트 , 데이터 파일
 
-600	    rw-------	개인 키 / 비밀 파일
+600/    rw-------/	개인 키 , 비밀 파일
 
     # 실행 파일 권한 설정
     $ chmod 755 run.sh
@@ -162,3 +179,23 @@ r(read) : 4 w(write) : 2 x(execute) : 1
 
     # 변경 후 확인
     $ ls -l
+
+  ### 권한 변경 수행로그
+  ***파일 권한 변경***
+
+    % touch run.sh
+    % ls -l
+    -rwxr-xr-x  1 yelp89890317  yelp89890317     0 Apr 14 09:13 run.sh
+    % chmod 777 run.sh
+    % ls -l
+    -rwxrwxrwx  1 yelp89890317  yelp89890317     0 Apr 14 09:13 run.sh 
+    # 모든 권한을 주었기 때문에 모든 rwx가 on
+
+  ***디렉토리 권한 변경***
+
+    % mkdir test
+    % ls -l
+    drwxr-xr-x  2 yelp89890317  yelp89890317    64 Apr 14 09:25 test
+    % chmod 111 test # 디렉토리에 실행권한만 부여
+    % ls -l
+    d--x--x--x  2 yelp89890317  yelp89890317    64 Apr 14 09:25 test
