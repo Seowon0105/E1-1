@@ -513,7 +513,7 @@ docker rm seowon-nginx
 ```
 
 ### 포트매핑 접속 증거 ###
-![portmapping](./Screenshot/custom%20image-prac.pngimage.png)
+[portmapping](./Screenshot/custom%20image-prac.pngimage.png)
 
 ### Docker 볼륨 영속성 
 
@@ -584,7 +584,7 @@ Made by Seowon #컨테이너 삭제 후에도 볼륨 유지!
 
 ### Git 설정 및 GitHub 연동
 
-![Connecting VS Code to GitHub](./Screenshot/vscode-git.png)
+[Connecting VS Code to GitHub](./Screenshot/vscode-git.png)
 
 *** 사용자 정보 설정 ***
 
