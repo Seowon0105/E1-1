@@ -183,19 +183,256 @@ r(read) : 4 w(write) : 2 x(execute) : 1
   ### 권한 변경 수행로그
   ***파일 권한 변경***
 
-    % touch run.sh
-    % ls -l
+    $ touch run.sh
+    $ ls -l
     -rwxr-xr-x  1 yelp89890317  yelp89890317     0 Apr 14 09:13 run.sh
-    % chmod 777 run.sh
-    % ls -l
+    $ chmod 777 run.sh
+    $ ls -l
     -rwxrwxrwx  1 yelp89890317  yelp89890317     0 Apr 14 09:13 run.sh 
     # 모든 권한을 주었기 때문에 모든 rwx가 on
 
   ***디렉토리 권한 변경***
 
-    % mkdir test
-    % ls -l
+    $ mkdir test
+    $ ls -l
     drwxr-xr-x  2 yelp89890317  yelp89890317    64 Apr 14 09:25 test
-    % chmod 111 test # 디렉토리에 실행권한만 부여
-    % ls -l
+    $ chmod 111 test # 디렉토리에 실행권한만 부여
+    $ ls -l
     d--x--x--x  2 yelp89890317  yelp89890317    64 Apr 14 09:25 test
+
+  ### Docker 설치 및 기본 점검
+  ***Docker 버전 확인***
+
+    % Docker --version
+    Docker version 28.5.2, build ecc6942
+  ***Docker 데몬 동작 확인***
+
+    docker ps : 제일 간단한 방법, Docker 데몬이 실행 중이면 컨테이너 목록을 표시합니다.
+    데몬이 안 켜져있으면 에러가 발생합니다.
+
+    docker info : Docker 데몬의 상세 정보를 표시합니다.
+    버전, 스토리지 드라이버, 컨테이너 수 등을 확인할 수 있습니다.
+
+    % docker info
+
+    Client:
+    Version:    28.5.2
+    Context:    orbstack
+    Debug Mode: false
+    Plugins:
+      buildx: Docker Buildx (Docker Inc.)
+        Version:  v0.29.1
+        Path:     /Users/yelp89890317/.docker/cli-plugins/docker-buildx
+      compose: Docker Compose (Docker Inc.)
+        Version:  v2.40.3
+        Path:     /Users/yelp89890317/.docker/cli-plugins/docker-compose
+
+    Server:
+    Containers: 0
+      Running: 0
+      Paused: 0
+      Stopped: 0
+    Images: 0
+    Server Version: 28.5.2
+    Storage Driver: overlay2
+      Backing Filesystem: btrfs
+      Supports d_type: true
+      Using metacopy: false
+      Native Overlay Diff: true
+      userxattr: false
+    Logging Driver: json-file
+    Cgroup Driver: cgroupfs
+    Cgroup Version: 2
+    Plugins:
+      Volume: local
+      Network: bridge host ipvlan macvlan null overlay
+      Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+    CDI spec directories:
+      /etc/cdi
+      /var/run/cdi
+    Swarm: inactive
+    Runtimes: io.containerd.runc.v2 runc
+    Default Runtime: runc
+    Init Binary: docker-init
+    containerd version: 1c4457e00facac03ce1d75f7b6777a7a851e5c41
+    runc version: d842d7719497cc3b774fd71620278ac9e17710e0
+    init version: de40ad0
+    Security Options:
+      seccomp
+      Profile: builtin
+    cgroupns
+    Kernel Version: 6.17.8-orbstack-00308-g8f9c941121b1
+    Operating System: OrbStack
+    OSType: linux
+    Architecture: x86_64
+    CPUs: 6
+    Total Memory: 15.67GiB
+    Name: orbstack
+    ID: b0060e74-3c0f-454e-835b-86fd07a82b20
+    Docker Root Dir: /var/lib/docker
+    Debug Mode: false
+    Experimental: false
+    Insecure Registries:
+      ::1/128
+      127.0.0.0/8
+    Live Restore Enabled: false
+    Product License: Community Engine
+    Default Address Pools:
+      Base: 192.168.97.0/24, Size: 24
+      Base: 192.168.107.0/24, Size: 24
+      Base: 192.168.117.0/24, Size: 24
+      Base: 192.168.147.0/24, Size: 24
+      Base: 192.168.148.0/24, Size: 24
+      Base: 192.168.155.0/24, Size: 24
+      Base: 192.168.156.0/24, Size: 24
+      Base: 192.168.158.0/24, Size: 24
+      Base: 192.168.163.0/24, Size: 24
+      Base: 192.168.164.0/24, Size: 24
+      Base: 192.168.165.0/24, Size: 24
+      Base: 192.168.166.0/24, Size: 24
+      Base: 192.168.167.0/24, Size: 24
+      Base: 192.168.171.0/24, Size: 24
+      Base: 192.168.172.0/24, Size: 24
+      Base: 192.168.181.0/24, Size: 24
+      Base: 192.168.183.0/24, Size: 24
+      Base: 192.168.186.0/24, Size: 24
+      Base: 192.168.207.0/24, Size: 24
+      Base: 192.168.214.0/24, Size: 24
+      Base: 192.168.215.0/24, Size: 24
+      Base: 192.168.216.0/24, Size: 24
+      Base: 192.168.223.0/24, Size: 24
+      Base: 192.168.227.0/24, Size: 24
+      Base: 192.168.228.0/24, Size: 24
+      Base: 192.168.229.0/24, Size: 24
+      Base: 192.168.237.0/24, Size: 24
+      Base: 192.168.239.0/24, Size: 24
+      Base: 192.168.242.0/24, Size: 24
+      Base: 192.168.247.0/24, Size: 24
+      Base: fd07:b51a:cc66:d000::/56, Size: 64
+
+    WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set #환경변수가 설정되어 있다는 뜻
+ 
+### Docker 기본 운영 명령 수행
+
+```bash
+  docker images : 이미지 다운로드/목록 확인
+  docker ps : 컨테이너 실행/중지/목록 확인 # -a : 중지된 목록도 보여줌
+  docker logs : 로그 확인
+
+  주요 옵션
+  # 마지막 100줄만 보기
+  docker logs --tail 100 my-app
+
+  # 실시간 로그 스트리밍 (tail -f처럼)
+  docker logs -f my-app
+
+  # 타임스탬프 함께 표시
+  docker logs -t my-app
+
+  # 특정 시간 이후의 로그만
+  docker logs --since 2024-01-15T10:00:00 my-app
+
+  # 마지막 10분의 로그
+  docker logs --since 10m my-app
+
+  docker stats : 리소스 확인
+  ```
+
+### 컨테이너 실행 실습
+
+docker run - 컨테이너 실행
+
+옵션/	설명/	                예시
+
+-d/ 백그라운드 실행 (detach)/	docker run -d nginx
+
+-it/	대화형 모드/	            docker run -it ubuntu bash
+
+--name/	컨테이너 이름 지정/	  docker run --name my-app nginx
+
+-p/	포트 매핑/	              docker run -p 8080:80 nginx
+
+-e/	환경변수 설정/	            docker run -e DB_HOST=localhost nginx
+
+-v/	볼륨 마운트/	            docker run -v /host:/container nginx
+
+--rm/	종료 시 자동 삭제/	      docker run --rm ubuntu echo "hi"
+
+
+```bash
+  % docker run hello-world
+  Unable to find image 'hello-world:latest' locally #hello-world 이미지가 없어서 이미지를 받아옴
+  latest: Pulling from library/hello-world
+  4f55086f7dd0: Pull complete 
+  Digest: sha256:452a468a4bf985040037cb6d5392410206e47db9bf5b7278d281f94d1c2d0931
+  Status: Downloaded newer image for hello-world:latest
+
+  Hello from Docker!
+  This message shows that your installation appears to be working correctly.
+
+  To generate this message, Docker took the following steps:
+  1. The Docker client contacted the Docker daemon.
+  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+      (amd64)
+  3. The Docker daemon created a new container from that image which runs the
+      executable that produces the output you are currently reading.
+  4. The Docker daemon streamed that output to the Docker client, which sent it
+      to your terminal.
+
+  To try something more ambitious, you can run an Ubuntu container with:
+  $ docker run -it ubuntu bash
+
+  Share images, automate workflows, and more with a free Docker ID:
+  https://hub.docker.com/
+
+  For more examples and ideas, visit:
+  https://docs.docker.com/get-started/
+
+  % docker run -it ubuntu bash
+  Unable to find image 'ubuntu:latest' locally
+  latest: Pulling from library/ubuntu
+  689b91d88a0f: Pull complete 
+  Digest: sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
+  Status: Downloaded newer image for ubuntu:latest
+  root@1ac1cef58b4d:/# ls 
+  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+  root@1ac1cef58b4d:/# echo hello # 명령어들이 동일하게 실행됨
+  hello
+  root@1ac1cef58b4d:/# exit #빠져나올땐 exit
+  exit
+```
+
+  ### attach vs exec 차이점
+
+  ***attach***
+
+  컨테이너의 표준 입출력(stdin, stdout, stderr)에 연결
+
+  이미 실행 중인 프로세스에 접속하는 것
+  
+  컨테이너 내 메인 프로세스와 상호작용
+  
+  메인 프로세스가 종료되면 컨테이너도 종료됨
+
+  로그 확인 용도
+  ```bash
+  docker attach <container>
+  ```
+  ***exec***
+
+  새로운 프로세스를 컨테이너 내에서 실행
+
+  컨테이너가 실행 중일 때 추가 명령어 실행
+  
+  메인 프로세스와 독립적으로 동작
+  
+  실행한 프로세스만 종료되고 컨테이너는 계속 실행됨
+
+  디버깅, 파일수정 용도
+
+  ```bash
+  docker exec -it <container> /bin/bash
+  ```
+
+### 기존 Dockerfile 기반 커스텀 이미지 제작
+
