@@ -721,3 +721,9 @@ origin  https://github.com/Seowon0105/E1-1.git (push)
 <p align="center">
 <img width="70%" alt="Image" src="https://github.com/user-attachments/assets/565240bb-87be-485e-8601-5392a8bdc661" />
 </p>
+
+## 트러블 슈팅2
+
+**문제**
+
+포트 접속 시에 
