@@ -626,8 +626,9 @@ Made by Seowon #컨테이너 삭제 후에도 볼륨 유지!
     새로운 컨테이너에 동일 볼륨을 연결하면 데이터를 그대로 사용할 수 있다.
 
 ### Git 설정 및 GitHub 연동
-
-[Connecting VS Code to GitHub](./Screenshot/vscode-git.png)
+<p align="center">
+<img width="70%" alt="Screenshot" src="https://github.com/user-attachments/assets/2553913e-571f-43f8-9adb-5b38fc1a2462" />
+</p>
 
 *** 사용자 정보 설정 ***
 
