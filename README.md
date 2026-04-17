@@ -674,3 +674,50 @@ $ git remote -v
 origin  https://github.com/Seowon0105/E1-1.git (fetch)
 origin  https://github.com/Seowon0105/E1-1.git (push)
 ```
+
+## 트러블 슈팅 1
+
+**문제**
+
+포트 매핑 스크린샷과 깃허브 연동 스크린샷의 깨짐 문제
+
+일반적인 방식으로 증거 스크린샷을 첨부하였을 때 vscode에선 정상적으로 보이지만 github에서는 보이지 않는 현상 발생.
+
+**원인분석**
+
+프로젝트 파일 내 상대 경로로 첨부하여서 깃허브 공간에선 인식하지 못한 것으로 분석.
+
+이전 코드
+```bash
+![screenshot](./Screenshot/custom image-prac.png)
+![screenshot](./Screenshot/vs-code image-git.png)
+```
+
+**확인**
+
+문제 파악 후 구글링하여 url로 직접 링크를 걸어주는 방법 확인.
+
+깃허브 issues -> 사용할 이미지 드래그드랍으로 붙여넣기 -> url생성(url이 생성되면 링크만 사용하고 url은 사용하지 않아도 됨.)
+
+변경 후 코드
+```bash
+<p align="center">
+<img width="70%" alt="Screenshot" src="https://github.com/user-attachments/assets/2553913e-571f-43f8-9adb-5b38fc1a2462" />
+</p>
+
+<p align="center">
+<img width="70%" alt="Screenshot" src="https://github.com/user-attachments/assets/2553913e-571f-43f8-9adb-5b38fc1a2462" />
+</p>
+```
+
+**문제 해결**
+
+코드 변경 후 정상적으로 이미지가 들어간 것을 확인할 수 있다.
+
+<p align="center">
+<img width="70%" alt="Image" src="https://github.com/user-attachments/assets/5d0b9762-4de3-4197-81fa-d6a875391181" />
+</p>
+
+<p align="center">
+<img width="70%" alt="Image" src="https://github.com/user-attachments/assets/565240bb-87be-485e-8601-5392a8bdc661" />
+</p>
