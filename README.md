@@ -230,6 +230,7 @@ r(read) : 4 w(write) : 2 x(execute) : 1
     Docker version 28.5.2, build ecc6942
   ***Docker 데몬 동작 확인***
 
+   ```bash
     docker ps : 제일 간단한 방법, Docker 데몬이 실행 중이면 컨테이너 목록을 표시합니다.
     데몬이 안 켜져있으면 에러가 발생합니다.
 
@@ -239,9 +240,9 @@ r(read) : 4 w(write) : 2 x(execute) : 1
     $ docker info
 
     Client:
-    Version:    28.5.2
-    Context:    orbstack
-    Debug Mode: false
+    Version:    28.5.2 #현재 사용 중인 Docker CLI 버전
+    Context:    orbstack #어떤 Docker 환경에 연결되어 있는지(OrbStack)
+    Debug Mode: false # 디버깅 로그 출력 여부
     Plugins:
       buildx: Docker Buildx (Docker Inc.)
         Version:  v0.29.1
@@ -333,7 +334,12 @@ r(read) : 4 w(write) : 2 x(execute) : 1
       Base: 192.168.247.0/24, Size: 24
       Base: fd07:b51a:cc66:d000::/56, Size: 64
 
-    WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set #환경변수가 설정되어 있다는 뜻
+    WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set
+    #iptables	:Linux의 방화벽/네트워크 필터링 도구
+    #RAW	: iptables의 원시(raw) 테이블
+    #NO_IPTABLES_RAW	: RAW 테이블을 사용하지 않겠다는 뜻
+    #INSECURE	: 보안이 완화된 상태
+  ```
  
 ### Docker 기본 운영 명령 수행
 
@@ -464,14 +470,22 @@ docker run - 컨테이너 실행
 **프로젝트 구조**
 
     E1-1/
+    ├──Screenshot/
     ├── Dockerfile
-    └── index.html
+    ├── index.html
+    └── README.md
 
 **Dockerfile의 정의**
 
-Dockerfile은 Docker 이미지를 생성하기 위한 스크립트 파일.
+Dockerfile은 DockerImage를 생성하기 위한 레시피(텍스트 파일)이다. 이미지를 구성하는데 필요한 모든 명령어와 설정이 포함된다.
 
-이미지 빌드 과정에서 실행할 명령어와 설명을 순서대로 기술
+이 문서는 이미지 빌더에게 실행할 명령어, 복사할 파일, 시작 명령어 등을 지시한다.
+
+Dockerfile을 작성한 후 빌드하면 Docker는 Dockerfile에 나열된 명령문을 차례대로 수행하며 DockerImage를 생성한다.
+
+Dockerfile을 읽을 줄 안다는 것은 해당 이미지가 어떻게 구성되어 있는지 알 수 있다는 의미이다.
+
+Docker 이미지는 읽기 전용 계층(layer)들로 구성된다. 각 계층은 Dockerfile의 한 명령어를 대표하고, 이 계층들은 쌓여서 이미지를 형성한다.
 
 **Dockefile이 필요한 이유**
 
@@ -483,8 +497,35 @@ Dockerfile은 Docker 이미지를 생성하기 위한 스크립트 파일.
 
 **Dockerfile 명령어**
 
-RUN :
+FROM
 
+기본 이미지를 지정.
+
+모든 Dockerfile의 첫 번째 명령어여야 한다.
+
+어떤 OS/환경을 기반으로 할지 결정한다.
+
+LABEL
+
+이미지의 버전, 작성자, 설명 등을 기록한다.
+
+docker inspect 이미지명 으로 확인 가능.
+
+COPY
+
+호스트 파일을 컨테이너로 복사.
+
+로컬 파일 → 컨테이너 내부로 복사.
+
+빌드 시점에만 작동.
+
+CMD
+
+컨테이너 시작 시 실행할 기본 명령어.
+
+컨테이너가 시작될 때 자동으로 실행.
+
+docker run 시 명령어를 입력하면 CMD는 무시.
 
 *** 실행 과정 ***
 
@@ -513,7 +554,9 @@ docker rm seowon-nginx
 ```
 
 ### 포트매핑 접속 증거 ###
-[portmapping](./Screenshot/custom%20image-prac.pngimage.png)
+<p align="center">
+<img width="70%" alt="Screenshot" src="https://github.com/user-attachments/assets/52143d9f-bcf5-41e3-8f4b-02371bd99c01" />
+</p>
 
 ### Docker 볼륨 영속성 
 
