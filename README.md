@@ -463,6 +463,26 @@ docker run - 컨테이너 실행
   docker exec -it <container> /bin/bash
   ```
 
+### Docker 이미지와 컨테이너의 차이
+
+    이미지(Image)
+    정의: 애플리케이션 실행에 필요한 모든 것을 포함한 불변의 템플릿/설계도
+    특징: 읽기 전용, 변경 불가능, 재사용 가능
+    비유: 클래스(Class) 또는 건축 설계도
+    
+    컨테이너(Container)
+    정의: 이미지를 기반으로 실제로 실행되는 인스턴스
+    특징: 읽기/쓰기 가능, 변경 가능, 격리된 환경
+    비유: 객체(Object) 또는 실제 건물
+
+    빌드/실행/변경 관점에서의 차이
+    관점	/이미지	/ 컨테이너
+    빌드	/docker build → 새로운 이미지 생성	/ 이미지 기반으로 docker run 실행
+    상태	/고정된 상태 (변경 불가)	/ 동적 상태 (변경 가능)
+    저장소	/로컬/레지스트리에 저장	/ 메모리/디스크에서 실행 중
+    변경 시	/Dockerfile 수정 → 재빌드 필요	/ 컨테이너 내부에서 직접 수정 가능
+    삭제	/docker rmi	/docker rm
+
 ### 기존 Dockerfile 기반 커스텀 이미지 제작
 
 웹서버 베이스의 이미지인 nginx사용.
@@ -470,10 +490,11 @@ docker run - 컨테이너 실행
 **프로젝트 구조**
 
     E1-1/
-    ├──Screenshot/
     ├── Dockerfile
     ├── index.html
     └── README.md
+
+커스텀 이미지 제작에 필요한 Dockerfile, index.html과 과제이해에 필요한 README.md로 구성하였다.
 
 **Dockerfile의 정의**
 
@@ -537,7 +558,7 @@ docker build -t my-nginx:1.0 .
 docker run -d -p 8080:80 --name seowon-nginx my-nginx:1.0 # -d : 백그라운드에서 실행 -p : 포트 매핑 --name : 컨테이너 이름 지정
 
 # 3. 브라우저에서 확인
-# http://localhost:8080 접속
+http://localhost:8080 접속
 
 컨테이너를 종료하려면?
 # 1. 실행 중인 컨테이너 확인
@@ -557,6 +578,12 @@ docker rm seowon-nginx
 <p align="center">
 <img width="70%" alt="Screenshot" src="https://github.com/user-attachments/assets/52143d9f-bcf5-41e3-8f4b-02371bd99c01" />
 </p>
+
+### 포트매핑이 필요한 이유
+
+컨테이너 내부의 포트는 격리된 네트워크환경에서 실행됨. 호스트에서 컨테이너로 접근하려면 -p 호스트포트:컨테이너포트 방식으로 연결해야 한다.
+
+예) 호스트포트 : 8080, 컨테이너 포트 : 80
 
 ### Docker 볼륨 영속성 
 
@@ -726,4 +753,47 @@ origin  https://github.com/Seowon0105/E1-1.git (push)
 
 **문제**
 
-포트 접속 시에 
+“호스트 포트가 이미 사용 중”이라 포트 매핑이 실패한다면?
+
+**원인 가설**
+
+이미 동일 포트를 사용하는 다른 컨테이너 또는 로컬 프로세스가 실행 중일 수 있음.
+
+**확인**
+```bash
+lsof -i :8080
+
+COMMAND   PID  USER  FD  TYPE  DEVICE SIZE/OFF NODE NAME
+python   1234  user  3u  IPv4  12345      0t0  TCP *:8080 (LISTEN)
+
+# 위 결과에서 PID(1234) 확인
+# 어떤 프로세스가 포트를 사용 중인지 파악
+
+# 프로세스 상세 정보 확인
+ps aux | grep 1234  # macOS/Linux
+```
+
+**해결**
+
+이전 컨테이너가 해당 포트를 점유 했을 때
+
+```bash
+# 실행 중인 컨테이너 확인
+docker ps
+
+# 해당 컨테이너 중지
+docker stop <container-id>
+
+# 또는 강제 삭제
+docker rm -f <container-id>
+```
+
+호스트 프로세스가 포트 점유
+
+```bash
+# 프로세스 종료 (macOS/Linux)
+kill -9 1234
+
+# 또는 다른 포트로 매핑
+docker run -p 8081:80 my-app  # 8080 → 8081로 변경
+```
